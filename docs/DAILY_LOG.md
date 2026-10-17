@@ -96,3 +96,23 @@ Remaining work:
 - Review uncommitted active-project changes and configure signing before user-controlled commits/PR. No commit, push, merge, or remote change performed.
 - Dispatch, execution lifecycle, results/aggregation, and approved teammate integration.
 - Week 3/4 work remains UNASSIGNED until the lead decides ownership.
+
+## 2026-10-17
+
+- Implemented `InMemoryAgentRegistry in the domain package.
+- Registration is idempotent by agent name: registering the same name returns the existing agent.
+- Used a `ReentrantLock` to guard the id and name indexes together. I chose it over
+  `synchronized` so virtual threads are never pinned.
+- Heartbeats are lock-free and cannot resurrect a removed agent.
+- Wrote `InMemoryAgentRegistryTest` with 12 tests, including concurrency tests on virtual
+  threads (5,000 same-name registrations produce one agent; 16 threads of
+  register/heartbeat/remove churn never fail).
+
+**Results**
+- `./mvnw test`: [8 passed, 0 failed]
+
+**Problems and fixes**
+- My first draft used `computeIfAbsent` over two maps. A concurrent remove and register
+  could return null for a name that was mid-removal. Fixed with a lock around both
+  indexes and added a churn test to guard against regression.
+
