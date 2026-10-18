@@ -1,0 +1,22 @@
+#!/bin/sh
+set -eu
+
+branch=$(git symbolic-ref --quiet --short HEAD) || {
+    echo "Commit on a feature branch, not a detached HEAD." >&2
+    exit 1
+}
+case "$branch" in
+    feature/*|fix/*|docs/*|chore/*|test/*) ;;
+    *) echo "Use feature/, fix/, docs/, chore/, or test/ branches; merge main through a PR." >&2; exit 1 ;;
+esac
+
+if [ "$(git config --bool --get commit.gpgsign || true)" != "true" ]; then
+    echo "Configure commit.gpgsign=true and your signing key before committing." >&2
+    exit 1
+fi
+if [ -z "$(git config --get user.signingkey || true)" ]; then
+    echo "Configure user.signingkey before committing." >&2
+    exit 1
+fi
+
+git diff --cached --check

@@ -1,48 +1,54 @@
 # Progress
 
-Updated: 2026-10-15. Active project is the C:\IMP\Zaalima Project copy.
-Branch: fix/application-startup.
+Updated: 2026-10-18. Active project: C:\IMP\Zaalima Project\High-Concurrency-Autonomous-Agent-Orchestrator.
+Today's branch: feature/week1-foundation. Week 1 baseline ended October 17; completion work is recorded on October 18.
 
 ## COMPLETED
 
-- Initial Java 21/Maven/Git verification, Spring Boot backend, health API, plan, and PDF extraction (October 11).
-- GitHub repository exists. Ahamed's October 13 commit ab0eff8 is on main and retained in this branch.
-- Reviewed ab0eff8: full startup failed due to duplicate controllers despite the single MVC test passing.
-- Removed the duplicate health controller and corrected the test import. Agent.java and AgentRegistry.java remain unchanged.
-- POST/GET/DELETE task APIs with validation, UUID lookup, QUEUED/CANCELLED states, immutable payloads, UTC timestamps, and centralized problem responses.
-- Configurable bounded process-local storage, including atomic concurrent admission and cancellation.
-- Initial mvn verify: 19 tests passed, including real HTTP/full startup tests; executable JAR packaged.
-- Applied changes to the active C:\IMP project and passed a clean verification there: 19 tests, zero failures/errors/skips. Packaged-JAR smoke check passed health/submission/lookup/cancellation; temporary process stopped.
-- Proposed discovery/client/execution Java ports and documented request/response contracts.
+- Initial backend, health API, requirements extraction, architecture, ownership, and schedule.
+- Core task POST/GET/DELETE foundation with validation, immutable snapshots, bounded storage, and consistent errors.
+- Startup fix and October 15 task foundation merged through PR #1 (main merge a684c4b).
+- Local SSH signing is configured; this does not establish GitHub verification.
+- Latest published main 3eca18d includes Ahamed's in-memory registry and 12 passing registry tests, preserved unchanged.
+- Added CoordinationLock/LockLease and TaskEventPublisher/TaskEvent contracts; documented schema, TTL/ownership, failure semantics, and team handoff.
+- Verified a real HTTP handling thread is virtual with a test-only probe.
+- Removed the hardcoded BuildProperties fallback; health version uses Maven-generated build-info.
+- Updated isolated build: 36 Java tests passed, 0 failures/errors/skips; JAR packaged.
+- Versioned Git hooks, installer, PR template, and CI workflow supplied; 9 disposable-repository hook checks passed.
+- Week 1 acceptance checklist and Git workflow instructions supplied.
+- Applied to active C:\IMP feature/week1-foundation: clean build passed all 36 Java tests, executable JAR packaged, and all 9 hook checks passed. Repository-local core.hooksPath=.githooks is installed.
 
 ## IN PROGRESS
 
-- Core orchestration: dispatch, execution states, results, and aggregation remain unfinished.
-- Integration contracts: proposed Java ports exist; team agreement and Redis schemas remain pending.
-- Week 1 foundation: secure registration design, execution engine, signed commits, and branch enforcement remain outstanding.
+- Week 1 governance: remote signature recognition, main protection, CI/check enforcement, and today's PR are not verified complete.
+- Core orchestration beyond foundation: dispatch, running/success/failure lifecycle, results, and aggregation.
+- Production adapter integration and teammate review of proposed contracts.
 
 ## WAITING FOR TEAMMATE
 
-- Ahamed: registry implementation, discovery, REST/gRPC/security, agent tests, Agent immutability correction, heartbeat and duplicate identity rules.
-- Robin: execution engine, cancellation/shutdown contract, Structured Concurrency and Java 21 preview integration.
-- Navitha: Pub/Sub and distributed lock contracts, implementation, and tests.
+- Ahamed: secure REST/gRPC registration/communication design, endpoints, authentication, discovery, heartbeat policy, and Agent constructor immutability follow-up. His in-memory registry implementation and tests are present.
+- Robin: production virtual-thread execution engine and Java 21 Structured Concurrency/preview integration.
+- Navitha: production lock and Pub/Sub adapters and real Redis tests.
 
-## NOT STARTED
+## External Actions Still Needed
 
-- Verify/configure commit signing, PR reviews, and GitHub hook enforcement. Repository creation is complete.
-- Persistence/retention, authentication, dispatch, result aggregation, and task-result API.
-- HARI's module and the full project are not complete.
+- GitHub's October 18 API check: 13a2e75 unverified with unknown_key; no signing keys returned for HariNarayanan1810. User was unsure how the key was registered. Reuse the existing public key; do not regenerate private credentials.
+- main protected=false at audit. GIT_WORKFLOW.md lists required PR/signature/review/check settings; local files cannot enable server enforcement.
+- CI is supplied locally, but no remote run is claimed before push. Do not fabricate signed/verified history or daily activity.
+- No commit, push, merge, or GitHub settings change is performed automatically.
 
 ## UNASSIGNED
 
-- Week 3/4 balancing, resilience, performance/pinning/leak checks, Docker, benchmarks, dashboard, evaluation roadmap, and final demo ownership.
+Week 3/4 balancing, resilience, benchmarks/pinning/leak investigations, Docker, dashboard, evaluation roadmap, and final demo ownership.
 
 ## Next Priorities
 
-1. Review today's changes and prepare signed commits/PR; no commit or push is performed automatically.
-2. Agree Java ports with Robin/Ahamed and Redis schemas with Navitha.
-3. Build dispatch/results against labeled test doubles before approved production integration.
+1. Verify local hooks, review changes, resolve GitHub signing-key registration, then create today's signed commit/PR.
+2. Run CI and configure/verify main protection to finish Week 1 governance acceptance.
+3. Agree adapters with teammates; implement dispatch/results against labeled test doubles within HARI's next milestone.
 
-## Current Limits
+HARI's Week 1 implementation deliverables are ready for review. Full Week 1 acceptance is still IN PROGRESS because remote enforcement/verification is pending. HARI's full four-week module and the entire Project 1 remain unfinished.
 
-Tasks stay QUEUED until cancelled; they are not executed. Records are in memory, lost at restart, and still counted after cancellation. No 10,000+ connection result has been measured. Daily commit gaps remain historical gaps; no history was backdated.
+## Current Runtime Limits
+
+Tasks stay QUEUED until cancelled, remain process-local, disappear at restart, and continue counting toward capacity after cancellation. Redis ports are not wired. No 10,000+ connection, distributed, leak, pinning, or throughput benchmark has been completed.
