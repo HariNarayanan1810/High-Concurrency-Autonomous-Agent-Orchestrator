@@ -44,6 +44,8 @@ Production implementation status: WAITING FOR TEAMMATE
 
 October 15 review: Ahamed's Agent model and AgentRegistry interface from ab0eff8 are retained. Registry implementation, registration/communication endpoints, security, discovery, heartbeat rules, and tests remain pending. Agent collection immutability needs his follow-up. HARI fixed the duplicate health controller and proposed core integration ports without taking over the agent implementation.
 
+October 18 update: main includes Ahamed's InMemoryAgentRegistry (3eca18d). Its 12 tests pass in the full build; his registry implementation and test files are preserved unchanged. Secure transport interfaces/security/discovery remain his responsibilities. HARI supplies the boundary types and integration contracts, not those production adapters.
+
 ## Member 4: Navitha
 
 Module: Redis Coordination
@@ -56,6 +58,8 @@ Responsibilities:
 - Coordination and locking tests.
 
 Production implementation status: WAITING FOR TEAMMATE
+
+Handoff: CoordinationLock/LockLease and TaskEventPublisher/TaskEvent v1 are now defined in the core integration package. Navitha reviews key/TTL/schema semantics and supplies actual Redis implementations/tests. No ownership change.
 
 ## Unassigned Requirements
 

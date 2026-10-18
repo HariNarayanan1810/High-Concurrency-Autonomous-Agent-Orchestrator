@@ -116,3 +116,40 @@ Remaining work:
   could return null for a name that was mid-removal. Fixed with a lock around both
   indexes and added a churn test to guard against regression.
 
+## 2026-10-18
+
+Work performed (HARI's Week 1 completion work):
+
+- Verified PR #1 merged and SSH signing configured locally. GitHub API reported 13a2e75 unknown_key and zero signing keys for HariNarayanan1810; user was unsure how to confirm the registration. No private key was read or regenerated.
+- GitHub main was unprotected at audit. Supplied concrete setup instructions rather than claiming server enforcement.
+- Reviewed latest main 3eca18d and ran all tests: 31 passed, including Ahamed's 12 registry tests. Fast-forwarded the clean active local main to this reviewed commit and created feature/week1-foundation.
+- Preserved Ahamed's production/test files. His historical October 17 test command/count and pinning claims above are not rewritten: this session independently verified 12 functional tests, not absence of thread pinning. No Maven wrapper exists yet; actual command used is mvn.
+- Defined core Redis lease/event interfaces and versioned payload-free task event schema, with validation/JSON contract tests. No Redis production module was implemented.
+- Verified a real HTTP request runs on a virtual thread using test-only instrumentation. No Robin production engine was implemented.
+- Removed the hardcoded build-version bean; health uses Maven-generated build-info.
+- Added versioned Git hooks, repository-local installer, disposable hook tests, PR template, and read-only CI workflow with official action commit pins.
+- Updated integration handoff, Git workflow, ownership, architecture, acceptance matrix, plan, and progress.
+
+Files changed:
+
+- .gitattributes; .githooks/pre-commit; .githooks/pre-push
+- .github/pull_request_template.md; .github/workflows/backend-ci.yml
+- scripts/Install-GitHooks.ps1; scripts/Test-GitHooks.ps1
+- src/main/java/com/zaalima/orchestrator/config/BuildPropertiesConfig.java (hardcoded fallback removed)
+- src/main/java/com/zaalima/orchestrator/integration/{CoordinationLock,LockLease,TaskEvent,TaskEventPublisher}.java
+- src/test/java/com/zaalima/orchestrator/api/{HealthControllerTest,TaskApiIntegrationTest}.java
+- src/test/java/com/zaalima/orchestrator/integration/IntegrationDataContractTest.java
+- README.md; docs/{GIT_WORKFLOW,WEEK1_ACCEPTANCE,OFFICIAL_REQUIREMENTS,INTEGRATION_CONTRACTS,ARCHITECTURE,TEAM_RESPONSIBILITIES,REQUIREMENTS_MATRIX,PROJECT_PLAN,PROGRESS,DAILY_LOG,TEST_REPORT}.md
+
+Tests executed:
+
+- Baseline mvn -B -ntp clean verify: 31 passed.
+- Updated isolated mvn -B -ntp clean verify -Ddebug=false -Dlogging.level.org.springframework=INFO: 36 passed, zero failures/errors/skips; executable JAR packaged.
+- powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Test-GitHooks.ps1: 9 checks passed. Temporary fixture identities/keys were removed; no actual repository commit or network push was made.
+- Active C:\IMP verification: same clean Maven command passed all 36 tests, 0 failures/errors/skips; executable JAR packaged. Installed repository-local core.hooksPath=.githooks; reran all 9 hook checks successfully in the active project.
+
+Remaining work:
+
+- Review uncommitted feature/week1-foundation changes and resolve the external signing/main-protection steps before claiming full Week 1 acceptance.
+- GitHub account public-key registration/verification, protected main and remote CI evidence remain IN PROGRESS. User-controlled signed commit/PR is still needed.
+- Secure registration/communication, production concurrency engine, and Redis adapters remain with their owners; Week 3/4 unassigned work remains unassigned.

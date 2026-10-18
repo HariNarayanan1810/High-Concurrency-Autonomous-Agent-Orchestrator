@@ -1,0 +1,49 @@
+name: Backend CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  build:
+    name: Java 21 Build
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Compile, test, and package
+        run: mvn -B -ntp clean verify
+      - name: Exercise Git hooks in disposable repositories
+        shell: pwsh
+        run: ./scripts/Test-GitHooks.ps1
+
+  signatures:
+    name: Verified PR Commits
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const commits = await github.paginate(github.rest.pulls.listCommits, {
+              ...context.repo,
+              pull_number: context.issue.number,
+              per_page: 100
+            });
+            const unverified = commits.filter(c => c.commit.verification?.verified !== true);
+            if (unverified.length) {
+              core.setFailed('GitHub has not verified these commits: ' +
+                unverified.map(c => c.sha.slice(0, 7)).join(', '));
+            }

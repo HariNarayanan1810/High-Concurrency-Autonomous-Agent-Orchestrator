@@ -6,24 +6,57 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.zaalima.orchestrator.api.dto.SubmitTaskRequest;
 import com.zaalima.orchestrator.api.dto.TaskResponse;
 import com.zaalima.orchestrator.core.TaskStatus;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = "orchestrator.tasks.max-stored-tasks=20")
+@Import(TaskApiIntegrationTest.ThreadProbeConfiguration.class)
 class TaskApiIntegrationTest {
 
     @Autowired
     private TestRestTemplate rest;
+
+    @Test
+    void httpRequestIsServedByAVirtualThread() {
+        var response = rest.getForEntity("/api/v1/health", JsonNode.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getHeaders().getFirst("X-Test-Virtual-Thread")).isEqualTo("true");
+    }
+
+    @TestConfiguration(proxyBeanMethods = false)
+    static class ThreadProbeConfiguration {
+
+        @Bean
+        OncePerRequestFilter threadProbe() {
+            return new OncePerRequestFilter() {
+                @Override
+                protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                                FilterChain chain) throws ServletException, IOException {
+                    response.setHeader("X-Test-Virtual-Thread", Boolean.toString(Thread.currentThread().isVirtual()));
+                    chain.doFilter(request, response);
+                }
+            };
+        }
+    }
 
     @Test
     void fullApplicationStartsAndHealthEndpointsRespond() {

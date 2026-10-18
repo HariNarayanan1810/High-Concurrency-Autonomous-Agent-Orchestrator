@@ -23,4 +23,15 @@ Configuration: SERVER_ADDRESS (127.0.0.1), SERVER_PORT (8080), MAX_STORED_TASKS 
 
 See [contracts](docs/INTEGRATION_CONTRACTS.md), [progress](docs/PROGRESS.md), and [test report](docs/TEST_REPORT.md). No 10,000+ connection target has been verified.
 
+## Team Workflow
+
+Develop on feature/, fix/, docs/, chore/, or test/ branches. Install local Git hooks once per clone:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Install-GitHooks.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Test-GitHooks.ps1
+```
+
+Use signed commits and PRs into main. See [Git workflow](docs/GIT_WORKFLOW.md) for signing, required GitHub settings, and CI check names. [Week 1 acceptance](docs/WEEK1_ACCEPTANCE.md) distinguishes completed local deliverables from remaining remote/team verification.
+
 This is a Team Project work under Zaalima Development Intership program . This particular project is about how to handle lots of work simultaneously and survive failures 

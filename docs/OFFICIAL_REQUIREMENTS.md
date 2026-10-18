@@ -65,7 +65,7 @@ Status: COMPLETED for Project 1 extraction on 2026-10-11 using Apache PDFBox.
 ## Ambiguities To Verify
 
 - Exact agent registration security requirements.
-- Whether gRPC is mandatory or optional for agent communication.
+- Both REST and gRPC interface designs are explicitly required in Week 1. The concrete protocol split, schemas, and authentication mechanism still need team design; neither transport is treated as optional for the interface-design requirement.
 - Exact GitHub hook setup and signed commit mechanism.
 - Required benchmark tooling and acceptance threshold.
 - Exact terminal dashboard requirements.
