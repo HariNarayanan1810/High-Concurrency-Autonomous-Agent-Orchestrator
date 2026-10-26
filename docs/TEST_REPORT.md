@@ -1,5 +1,16 @@
 # Test Report
 
+## 2026-10-26 CI Exit-Status Regression
+
+- User-supplied GitHub Actions log: Java compile/test/package passed; disposable hook step printed all 9 checks passed but exited 1. Core PR #3 is merged in the supplied screenshots.
+- Reproduced in the active project by calling ./scripts/Test-GitHooks.ps1 followed by GitHub's wrapper: if (Test-Path -LiteralPath variable:\LASTEXITCODE) { exit $LASTEXITCODE }. Nine checks passed; wrapper exited 1. The final expected branch rejection left native LASTEXITCODE=1.
+- Added explicit exit 0 after the script's try/finally. Assertions and cleanup errors still terminate before that line; expected native rejections no longer leak as overall failure. No Java code, Git-hook policy, user signing configuration, or CI failure gate was weakened.
+- Same wrapper in isolated copy and active C:\IMP project now passes all 9 checks and exits 0. Deliberately injected an isolated terminating error: exit 1 as required; removed injection before transfer. Fixtures use disposable repositories/keys with no network or real commit/push.
+- Current branch: fix/hook-test-exit-status, based on clean core commit 28cae77. No commit/push/merge performed by the assistant. Remote-green verification remains pending publication; rerunning the old commit alone will not apply this fix.
+- Java sources unchanged in this follow-up; the prior 71-test clean build stands, and the supplied remote compile/test/package step passed. No new Maven run was needed for this script-only change.
+
+Reference for the runner's appended exit check: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#exit-codes-and-error-action-preference.
+
 ## 2026-10-26 Core Orchestration
 
 Baseline main: bc25f93 (PR #2 merged). Active-project branch: feature/core-orchestration. No new production dependencies. Java 21 / Maven toolchain retained.
