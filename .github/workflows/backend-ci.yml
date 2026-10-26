@@ -25,7 +25,7 @@ jobs:
       - name: Compile, test, and package
         run: mvn -B -ntp clean verify
       - name: Exercise Git hooks in disposable repositories
-        shell: pwsh
+        shell: powershell
         run: ./scripts/Test-GitHooks.ps1
 
   signatures:

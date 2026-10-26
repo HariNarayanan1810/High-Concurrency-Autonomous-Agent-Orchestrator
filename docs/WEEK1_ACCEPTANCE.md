@@ -1,5 +1,11 @@
 # Week 1 Acceptance
 
+## Historical Scope Clarification (October 26)
+
+This is an October 18 planning/audit snapshot, not an official individual weekly assignment. The PDF specifies project-wide weekly requirements; member ownership was assigned overall. Earlier wording mixed local backend completion with repository governance. Neither pending GitHub settings nor this proposed checklist means the core algorithm is missing. Current core completion/integration evidence is in CORE_MODULE_HANDOFF.md, PROGRESS.md, and TEST_REPORT.md; historical statements below are not current status.
+
+PR #2 subsequently merged the foundation; GitHub verified a590731 at the latest audit. Current code adds dispatch, execution states, deadlines/cancellation and results. Production teammate integration and remote CI verification remain separate. Do not use the historical QUEUED-only or unknown-key statements below as today's verdict.
+
 Audit date: 2026-10-18. Baseline Week 1 dates: October 11-17; remaining work is recorded on the actual October 18 date. Source: Project 1 of the official PDF, with team ownership from TEAM_RESPONSIBILITIES.md.
 
 ## HARI's Deliverables

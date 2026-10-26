@@ -5,7 +5,21 @@ Project: High-Concurrency Autonomous Agent Orchestrator
 Start date: 2026-10-11
 Target final date: 2026-11-07
 
-## Milestones
+## October 26 Reassessment (Current)
+
+The PDF supplies project-wide weekly requirements, not individual weekly assignments. The October 11-November 7 dated schedule below came from the user's master instructions as a planning baseline, not an employer-issued per-member weekly assignment. The extra personal Week 1 sign-off checklist was a planning/audit aid, not an official assignment. Missed activity remains recorded honestly; work is not backdated. The older October 20/27 priorities are superseded by this reassessment, not represented as met on time.
+
+- Core APIs, dispatch, execution states, deadlines/cancellation, result aggregation, validation, and owned tests/docs are implemented. Full isolated build: 71 passing tests, including 8 execution HTTP tests with labeled doubles and Ahamed's 12 unchanged registry tests. Active-project evidence is in TEST_REPORT.md.
+- Production execution stays disabled until approved Ahamed/Robin adapter beans exist. Navitha's Redis integration is separate; core tests do not complete distributed coordination or load-target verification.
+- October 26-27 proposed focus: review the core handoff and agree cancellation, port, and event-v2 contracts. Ask all adapter owners for actual delivery dates; these are not unilateral new teammate deadlines.
+- October 28-November 3 proposed focus: integrate approved real adapters and verify network failure, cancellation, aggregation, and Redis semantics together, contingent on delivery.
+- November 4-7 proposed focus: integration fixes, final evidence/docs/demo, and agreed remaining deliverables. November 7 remains a target, not a guarantee; agree scope if dependencies cannot fit.
+- Week 3/4 reliability, deployment, dashboard, benchmark, 10,000+ target, and evaluation-roadmap ownership remain UNASSIGNED. Team/lead must explicitly assign them.
+- PR #2 merged the previous foundation. New work is on feature/core-orchestration. Commit/push/PR remain user-controlled; the CI shell alignment still needs a remote run.
+
+See CORE_MODULE_HANDOFF.md for the precise completed-core versus pending-integration boundary.
+
+## Historical Milestones (Superseded)
 
 | Dates | Milestone | Deliverables | Status |
 | --- | --- | --- | --- |

@@ -1,5 +1,31 @@
 # Test Report
 
+## 2026-10-26 Core Orchestration
+
+Baseline main: bc25f93 (PR #2 merged). Active-project branch: feature/core-orchestration. No new production dependencies. Java 21 / Maven toolchain retained.
+
+Isolated command: mvn -B -ntp clean verify -Ddebug=false -Dlogging.level.org.springframework=INFO.
+
+Result at 19:34 IST: BUILD SUCCESS; 71 tests, 0 failures/errors/skips; executable JAR packaged.
+
+- OrchestrationServiceTest: 20 tests for aggregation, sanitized failures, discovery/correlation/size limits, rejection, queued/running cancellation, deadline including queued dispatch, late callbacks, close, and mode/adapter validation.
+- OrchestrationApiIntegrationTest: 8 real HTTP/full-context tests with explicitly test-only agents/executor; aggregation, no agents, sanitized agent errors, timeout, cancellation/interruption, completed-task conflict, unknown results, and independent task outputs.
+- OrchestrationPropertiesTest: 3 limit-validation tests; TaskRetentionTest: 3 tests for expired terminal reclamation, active-record protection, and no double slot release.
+- IntegrationDataContractTest: 5 tests, including event schema v1 compatibility/v2 states.
+- Existing tests retained, including Ahamed's 12 unchanged registry tests. No production adapter is supplied or claimed by these fixtures.
+
+Isolated hook command: powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Test-GitHooks.ps1; all 9 checks passed. Disposable repositories/keys only; no user key, network push, or actual repository commit used.
+
+### Active-Project Final Verification
+
+- Directory: C:\IMP\Zaalima Project\High-Concurrency-Autonomous-Agent-Orchestrator; feature/core-orchestration. Removed a stray `de` token from HealthControllerTest without changing test behavior.
+- Applied the isolated tested patch after git apply --check. Active mvn -B -ntp clean verify -Ddebug=false -Dlogging.level.org.springframework=INFO: BUILD SUCCESS at 19:45:37 IST; 71 tests, zero failures/errors/skips; executable JAR packaged.
+- Active powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Test-GitHooks.ps1: all 9 checks passed.
+- Packaged-JAR smoke on localhost port 58683: health UP; submission QUEUED with execution disabled; pending result HTTP 409; cancellation and terminal result CANCELLED. Temporary Java process stopped. The first smoke harness invocation had a PowerShell variable-interpolation parse error before launching; corrected the output string and reran successfully. No application build failure remained.
+- Changes remain uncommitted on the feature branch. No push, merge, remote setting change, or teammate production rewrite performed.
+
+Limits: no real agent transport, Robin engine, Redis, durable recovery, load balancing, 10,000+ target, pinning/leak, or throughput benchmark has been verified. Future cancellation requests cannot force uncooperative remote work to stop. CI hook runtime now uses the locally tested Windows PowerShell; remote success requires a new pushed run and is not claimed.
+
 ## 2026-10-11
 
 ### Environment

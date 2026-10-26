@@ -26,7 +26,7 @@ class IntegrationDataContractTest {
         assertThat(event.taskId()).isEqualTo(task.taskId());
         assertThat(event.status()).isEqualTo(TaskStatus.CANCELLED);
         assertThat(event.occurredAt()).isEqualTo(cancelled);
-        assertThat(event.schemaVersion()).isEqualTo(1);
+        assertThat(event.schemaVersion()).isEqualTo(2);
         assertThat(TaskEvent.from(task).eventId()).isNotEqualTo(event.eventId());
         ObjectMapper mapper = JsonMapper.builder().findAndAddModules().build();
         String json = mapper.writeValueAsString(event);
@@ -36,7 +36,7 @@ class IntegrationDataContractTest {
 
     @Test
     void unsupportedEventSchemaIsRejected() {
-        assertThatThrownBy(() -> new TaskEvent(UUID.randomUUID(), 2, UUID.randomUUID(),
+        assertThatThrownBy(() -> new TaskEvent(UUID.randomUUID(), 99, UUID.randomUUID(),
                 TaskStatus.QUEUED, Instant.now())).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -61,5 +61,13 @@ class IntegrationDataContractTest {
         assertThat(result.output()).containsEntry("value", "original");
         assertThatThrownBy(() -> result.output().put("extra", "value"))
                 .isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test
+    void legacyEventSchemaKeepsItsOriginalStatusSet() {
+        assertThat(new TaskEvent(UUID.randomUUID(), 1, UUID.randomUUID(), TaskStatus.QUEUED, Instant.now())
+                .schemaVersion()).isEqualTo(1);
+        assertThatThrownBy(() -> new TaskEvent(UUID.randomUUID(), 1, UUID.randomUUID(),
+                TaskStatus.RUNNING, Instant.now())).isInstanceOf(IllegalArgumentException.class);
     }
 }

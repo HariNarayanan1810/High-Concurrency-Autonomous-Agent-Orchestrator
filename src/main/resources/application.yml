@@ -16,5 +16,10 @@ server:
   port: ${SERVER_PORT:8080}
 
 orchestrator:
+  execution:
+    enabled: ${TASK_EXECUTION_ENABLED:false}
+    timeout: ${TASK_TIMEOUT:30s}
+    max-agents: ${MAX_AGENTS_PER_TASK:16}
+    retention: ${TASK_RETENTION:1h}
   tasks:
     max-stored-tasks: ${MAX_STORED_TASKS:1000}
