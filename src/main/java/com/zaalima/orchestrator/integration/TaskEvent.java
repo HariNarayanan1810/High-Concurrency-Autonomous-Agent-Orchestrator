@@ -9,15 +9,18 @@ import java.util.UUID;
 public record TaskEvent(UUID eventId, int schemaVersion, UUID taskId,
                         TaskStatus status, Instant occurredAt) {
 
-    public static final int SCHEMA_VERSION = 1;
+    public static final int SCHEMA_VERSION = 2;
 
     public TaskEvent {
         Objects.requireNonNull(eventId, "eventId");
         Objects.requireNonNull(taskId, "taskId");
         Objects.requireNonNull(status, "status");
         Objects.requireNonNull(occurredAt, "occurredAt");
-        if (schemaVersion != SCHEMA_VERSION) {
+        if (schemaVersion != 1 && schemaVersion != SCHEMA_VERSION) {
             throw new IllegalArgumentException("Unsupported task event schema version: " + schemaVersion);
+        }
+        if (schemaVersion == 1 && status != TaskStatus.QUEUED && status != TaskStatus.CANCELLED) {
+            throw new IllegalArgumentException("Schema v1 only supports QUEUED and CANCELLED.");
         }
     }
 

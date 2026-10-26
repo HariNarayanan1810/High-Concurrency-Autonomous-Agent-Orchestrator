@@ -2,6 +2,7 @@ package com.zaalima.orchestrator.api;
 
 import com.zaalima.orchestrator.core.TaskCapacityException;
 import com.zaalima.orchestrator.core.TaskNotFoundException;
+import com.zaalima.orchestrator.core.TaskConflictException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -15,6 +16,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(TaskConflictException.class)
+    public ProblemDetail handleConflict(TaskConflictException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
+    }
 
     @ExceptionHandler(TaskNotFoundException.class)
     public ProblemDetail handleNotFound(TaskNotFoundException exception) {

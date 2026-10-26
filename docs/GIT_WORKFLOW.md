@@ -1,6 +1,8 @@
 # Git and Pull Request Workflow
 
-Updated: 2026-10-18. Applies to all four members without changing module ownership.
+Workflow supplied: 2026-10-18. Current note: 2026-10-26. Applies to all four members without changing module ownership.
+
+PR #2 merged the foundation and GitHub verified a590731 at the latest audit; the October 18 unknown-key investigation below is historical, not an instruction to regenerate keys. Current branch is feature/core-orchestration. The published CI failed its hook step; this change aligns that step with locally tested Windows PowerShell. A new remote run is required before calling CI fixed/green. Main protection remains a separate repository setting, not a core algorithm acceptance gate. Do not change signing configuration or upload keys unnecessarily.
 
 ## Daily Workflow
 

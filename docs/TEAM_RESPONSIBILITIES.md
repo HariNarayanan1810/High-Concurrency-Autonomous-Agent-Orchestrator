@@ -1,5 +1,11 @@
 # Team Responsibilities
 
+## October 26 Handoff
+
+Ownership below is unchanged. HARI's core dispatch, execution states, deadline/cancellation handling, result aggregation/API, retention, and tests/documentation are implemented. Production integration support remains: Robin supplies TaskExecutionEngine, Ahamed supplies AgentDirectory/AgentClient, and Navitha supplies Redis adapters. See CORE_MODULE_HANDOFF.md for the contracts and verification boundary. Test-only virtual threads/agents are fixtures, not teammate production implementations. TaskEvent now emits schema v2; Navitha must review consumer compatibility before integration.
+
+The user's member assignment was overall module ownership, not an official individual Week 1/2/3/4 schedule. Coordinate real delivery dates with each owner; the proposed plan does not reassign their work.
+
 ## Member 1: HARI, Team Lead
 
 Module: Core Backend and Orchestration
