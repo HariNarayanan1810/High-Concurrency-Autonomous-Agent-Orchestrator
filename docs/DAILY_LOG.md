@@ -1,5 +1,13 @@
 # Daily Log
 
+## 2026-10-26 CI Follow-up
+
+- User pushed core commit 28cae77 and merged PR #3; screenshots show remote Java build success but hook step failure after all 9 checks passed.
+- Reproduced the failure locally using GitHub's PowerShell wrapper. The last expected negative hook test leaves LASTEXITCODE=1. The earlier shell-edition adjustment did not solve exit-status propagation.
+- Added explicit success exit after assertions/finally cleanup in scripts/Test-GitHooks.ps1. All 9 checks plus the exact wrapper pass in isolated and active projects with exit 0. A deliberately injected isolated error still exited 1; removed injection.
+- Created fix/hook-test-exit-status from the clean core commit; no Java/teammate code or hook validation policy changes. Updated progress/test evidence. No assistant commit, push, or merge.
+- Next: user reviews/signs/pushes this focused fix, opens a PR into main, and verifies a fresh GitHub run. Remote success is not claimed from local reproduction.
+
 ## 2026-10-26
 
 Work performed (actual date; no backdating):

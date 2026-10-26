@@ -139,3 +139,6 @@ try {
         Remove-Item -LiteralPath $resolvedFixture -Recurse -Force
     }
 }
+
+# Expected hook rejections leave a nonzero native exit code for the CI shell.
+exit 0
